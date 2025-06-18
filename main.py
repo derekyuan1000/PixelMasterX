@@ -4,6 +4,7 @@ import tkinter as tk
 
 from GUI import GUI
 from Limiter import Controller
+from Menu import MenuPage
 
 root = tk.Tk()
 
@@ -47,3 +48,4 @@ def on_close():
 
 if __name__ == "__main__":
     main()
+

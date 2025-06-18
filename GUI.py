@@ -4,6 +4,7 @@ import ttkbootstrap as tb
 from ttkbootstrap.constants import *
 import Conversions as info
 import threading
+import Menu
 
 class GUI:
     def __init__(self, ROOT) -> None:
@@ -16,20 +17,13 @@ class GUI:
         self.style = tb.Style(theme="darkly")
         self.ROOT.configure(bg=self.style.colors.bg)
 
-        # --- Menu Bar ---
-        menubar = Menu(self.ROOT, bg="#222222", fg="#ffffff", activebackground="#444444", activeforeground="#ffffff", borderwidth=0)
-        file_menu = Menu(menubar, tearoff=0, bg="#222222", fg="#ffffff", activebackground="#444444", activeforeground="#ffffff")
-        file_menu.add_command(label="File Conversion", command=self.show_conversion_frame)
-        file_menu.add_command(label="Remove Background", command=self.show_remove_background)
-        file_menu.add_command(label="About", command=self.show_about)
-        file_menu.add_separator()
-        file_menu.add_command(label="Exit", command=self.ROOT.quit)
-        menubar.add_cascade(label="Menu", menu=file_menu)
-        self.ROOT.config(menu=menubar)
-
         # --- Main Frame ---
         self.MAIN_FRAME = ttk.Frame(self.ROOT, padding=15)
         self.MAIN_FRAME.pack(fill="both", expand=True)
+
+        # --- Menu Page (Home) ---
+        self.menu_page = Menu.MenuPage(self.MAIN_FRAME, self)
+        self.menu_page.pack(fill="both", expand=True)
 
         # --- Header ---
         header_frame = ttk.Frame(self.MAIN_FRAME)
@@ -38,9 +32,8 @@ class GUI:
         ttk.Label(header_frame, text="PIXELMASTERX",
                   font=("Segoe UI", 16, "bold")).pack(side="left")
 
-        # --- Conversion Frame (default view) ---
+        # --- Conversion Frame ---
         self.conversion_frame = ttk.Frame(self.MAIN_FRAME)
-        self.conversion_frame.pack(fill="both", expand=True)
         self.build_conversion_ui(self.conversion_frame)
 
         # --- Remove Background Frame ---
@@ -55,17 +48,26 @@ class GUI:
         self.ROOT.bind("<Escape>", self.exit_fullscreen)
         self.fullscreen = False
 
+    def show_menu_page(self):
+        self.conversion_frame.pack_forget()
+        self.remove_bg_frame.pack_forget()
+        self.about_frame.pack_forget()
+        self.menu_page.pack(fill="both", expand=True)
+
     def show_conversion_frame(self):
+        self.menu_page.pack_forget()
         self.about_frame.pack_forget()
         self.remove_bg_frame.pack_forget()
         self.conversion_frame.pack(fill="both", expand=True)
 
     def show_remove_background(self):
+        self.menu_page.pack_forget()
         self.conversion_frame.pack_forget()
         self.about_frame.pack_forget()
         self.remove_bg_frame.pack(fill="both", expand=True)
 
     def show_about(self):
+        self.menu_page.pack_forget()
         self.conversion_frame.pack_forget()
         self.remove_bg_frame.pack_forget()
         self.about_frame.pack(fill="both", expand=True)
@@ -153,12 +155,6 @@ class GUI:
         action_frame = ttk.Frame(single_frame)
         action_frame.pack(fill="x", pady=(10, 0))
 
-        progress_frame = ttk.Frame(action_frame)
-        progress_frame.pack(fill="x", pady=(0, 15))
-        ttk.Label(progress_frame, text="Progress:").pack(anchor="w", pady=(0, 5))
-        self.SINGLE_FORMAT_PROGRESS_BAR = ttk.Progressbar(progress_frame, orient="horizontal", mode="determinate", length=400)
-        self.SINGLE_FORMAT_PROGRESS_BAR.pack(fill="x")
-
         # Action buttons row
         buttons_frame = ttk.Frame(action_frame)
         buttons_frame.pack(fill="x", side="right")
@@ -226,37 +222,11 @@ class GUI:
         batch_action_frame = ttk.Frame(batch_frame)
         batch_action_frame.pack(fill="x", pady=(10, 0))
 
-        batch_progress_frame = ttk.Frame(batch_action_frame)
-        batch_progress_frame.pack(fill="x", pady=(0, 15))
-        ttk.Label(batch_progress_frame, text="Progress:").pack(anchor="w", pady=(0, 5))
-        self.BATCH_FORMAT_PROGRESS_BAR = ttk.Progressbar(batch_progress_frame, orient="horizontal", mode="determinate", length=400)
-        self.BATCH_FORMAT_PROGRESS_BAR.pack(fill="x")
-
         ttk.Button(batch_action_frame, text="Convert Files", style="Accent.TButton",
                   command=lambda: self.controller.convert_batch_files(self.batch_file_paths)).pack(side="right")
 
-    def toggle_fullscreen(self, event=None):
-        self.fullscreen = not self.fullscreen
-        self.ROOT.attributes("-fullscreen", self.fullscreen)
-
-    def exit_fullscreen(self, event=None):
-        self.fullscreen = False
-        self.ROOT.attributes("-fullscreen", False)
-
-    def set_controller(self, controller):
-        self.controller = controller
-
-    def lock_from_format(self):
-        self.SINGLE_FORMAT_FROM_BOX.config(state="disabled")
-
-    def unlock_from_format(self):
-        self.SINGLE_FORMAT_FROM_BOX.config(state="readonly")
-
-    def lock_batch_from_format(self):
-        self.BATCH_FORMAT_FROM_BOX.config(state="disabled")
-
-    def unlock_batch_from_format(self):
-        self.BATCH_FORMAT_FROM_BOX.config(state="readonly")
+        # Add back button at the bottom
+        ttk.Button(parent, text="Back", command=self.show_menu_page).pack(side="bottom", pady=10)
 
     def build_remove_bg_ui(self, parent):
         # UI elements for Remove Background functionality
@@ -297,16 +267,6 @@ class GUI:
         action_frame = ttk.Frame(container)
         action_frame.pack(fill="x", pady=(10, 0))
 
-        progress_frame = ttk.Frame(action_frame)
-        progress_frame.pack(fill="x", pady=(0, 15))
-        ttk.Label(progress_frame, text="Progress:").pack(anchor="w", pady=(0, 5))
-        self.BG_REMOVE_PROGRESS_BAR = ttk.Progressbar(progress_frame, orient="horizontal", mode="determinate", length=400)
-        self.BG_REMOVE_PROGRESS_BAR.pack(fill="x")
-
-        # Status label
-        self.bg_status_label = ttk.Label(progress_frame, text="")
-        self.bg_status_label.pack(anchor="w", pady=(5, 0))
-
         # Action buttons row
         buttons_frame = ttk.Frame(action_frame)
         buttons_frame.pack(fill="x", side="right")
@@ -315,6 +275,9 @@ class GUI:
         self.bg_remove_button = ttk.Button(buttons_frame, text="Remove Background", style="Accent.TButton",
                   command=lambda: self.controller.remove_background(self.bg_file_paths))
         self.bg_remove_button.pack(side="right")
+
+        # Add back button at the bottom
+        ttk.Button(parent, text="Back", command=self.show_menu_page).pack(side="bottom", pady=10)
 
         # Create a loading overlay that will be shown during processing
         self.loading_frame = ttk.Frame(self.ROOT, style="TFrame")
@@ -365,3 +328,26 @@ class GUI:
             if message and hasattr(self, 'bg_status_label'):
                 self.bg_status_label.config(text=message)
             self.ROOT.update()
+
+    def toggle_fullscreen(self, event=None):
+        self.fullscreen = not self.fullscreen
+        self.ROOT.attributes("-fullscreen", self.fullscreen)
+
+    def exit_fullscreen(self, event=None):
+        self.fullscreen = False
+        self.ROOT.attributes("-fullscreen", False)
+
+    def set_controller(self, controller):
+        self.controller = controller
+
+    def lock_from_format(self):
+        self.SINGLE_FORMAT_FROM_BOX.config(state="disabled")
+
+    def unlock_from_format(self):
+        self.SINGLE_FORMAT_FROM_BOX.config(state="readonly")
+
+    def lock_batch_from_format(self):
+        self.BATCH_FORMAT_FROM_BOX.config(state="disabled")
+
+    def unlock_batch_from_format(self):
+        self.BATCH_FORMAT_FROM_BOX.config(state="readonly")
