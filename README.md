@@ -1,8 +1,9 @@
 # PixelMasterX
 
-PixelMasterX is a desktop application built with Python and Tkinter that allows you to convert files between various formats and edit images by removing backgrounds. It features both single and batch file conversion modes, a background removal tool, a modern dark theme, and a user-friendly graphical interface.
+PixelMasterX is a modern desktop application built with Python and Tkinter (using ttkbootstrap) for converting files between various formats and removing backgrounds from images. It features a clean home menu, single and batch file conversion, a background remover, and a user-friendly dark-themed interface.
 
 ## Features
+- Home menu for easy navigation
 - Convert single or multiple files at once
 - Remove backgrounds from images with a single click
 - Supports popular image formats: PNG, JPG, JPEG, GIF, BMP, WEBP, TIFF
@@ -10,6 +11,7 @@ PixelMasterX is a desktop application built with Python and Tkinter that allows 
 - Batch conversion with automatic output folder creation
 - Remembers window size and position
 - Modern dark theme using ttkbootstrap
+- Simple pop-up notifications for conversion and background removal status
 
 ## Requirements
 - Python 3.7+
@@ -30,20 +32,25 @@ Run the application with:
 python main.py
 ```
 
-- Use the GUI to select files, choose formats, and convert.
+or boot the main.exe file which can be downloaded from the releases section.
+
+- Use the home menu to select File Conversion or Remove Background.
 - For batch conversions, all selected files must be of the same format.
-- To remove backgrounds from images, go to the "Remove Background" section from the menu.
+- To remove backgrounds from images, use the dedicated Remove Background screen.
+- Pop-up notifications will inform you of conversion and background removal status.
 
 ## File Structure
 - `main.py` - Application entry point
-- `GUI.py` - GUI layout and logic
+- `GUI.py` - GUI layout, navigation, and logic
 - `Limiter.py` - Controller for file operations and conversions
 - `Conversions.py` - Supported formats and conversion rules
 - `BackgroundRemover.py` - Image background removal functionality
 - `Converter.py` - File conversion functionality
 - `FileHandler.py` - File selection and path management
+- `Menu.py` - Home menu page
 - `requirements.txt` - Python dependencies
 - `favicon.ico` - Application icon
+- `Screenshots/` - Screenshots and sample images
 
 ## Screenshots
 Screenshots are available in the `Screenshots/` folder.
@@ -51,3 +58,6 @@ Screenshots are available in the `Screenshots/` folder.
 
 ## License
 Check out [LICENSE](LICENSE) for details.
+
+## Contributing
+Contributions are welcome! Please fork the repository and submit a pull request with your changes. Ensure your code adheres to the project's coding standards and includes appropriate tests. Alternatively, you can email me at mail@derekyuan.co.uk for any suggestions or issues.
