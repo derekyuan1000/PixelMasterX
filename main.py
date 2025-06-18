@@ -33,7 +33,7 @@ def load_window_geometry():
 
 
 def main():
-    root.title("Ultimate File Converter")
+    root.title("PixelMasterX")
     load_window_geometry()
     root.resizable(True, True)
     root.protocol("WM_DELETE_WINDOW", on_close)

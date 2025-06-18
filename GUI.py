@@ -8,7 +8,7 @@ import threading
 class GUI:
     def __init__(self, ROOT) -> None:
         self.ROOT = ROOT
-        self.ROOT.title("Ultimate File Converter")
+        self.ROOT.title("PixelMasterX")
         self.ROOT.geometry("800x700")
         self.ROOT.resizable(True, True)
 
@@ -35,7 +35,7 @@ class GUI:
         header_frame = ttk.Frame(self.MAIN_FRAME)
         header_frame.pack(fill="x", pady=(0, 15))
 
-        ttk.Label(header_frame, text="ULTIMATE FILE CONVERTER",
+        ttk.Label(header_frame, text="PIXELMASTERX",
                   font=("Segoe UI", 16, "bold")).pack(side="left")
 
         # --- Conversion Frame (default view) ---
@@ -74,10 +74,10 @@ class GUI:
         about_container = ttk.Frame(parent, padding=20)
         about_container.pack(fill="both", expand=True)
 
-        ttk.Label(about_container, text="About Ultimate File Converter",
+        ttk.Label(about_container, text="About PixelMasterX",
                   font=("Segoe UI", 14, "bold")).pack(anchor="center", pady=(0, 20))
 
-        ttk.Label(about_container, text="A modern, easy-to-use file conversion utility.",
+        ttk.Label(about_container, text="A modern, easy-to-use file conversion and image editing utility.",
                   font=("Segoe UI", 11)).pack(anchor="center", pady=5)
 
         ttk.Label(about_container, text="Supports conversion between various image, audio, and video formats.",

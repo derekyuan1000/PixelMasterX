@@ -1,18 +1,20 @@
-# Ultimate File Converter
+# PixelMasterX
 
-Ultimate File Converter is a desktop application built with Python and Tkinter that allows you to convert images and audio files between various formats. It features both single and batch file conversion modes, a modern dark theme, and a user-friendly graphical interface.
+PixelMasterX is a desktop application built with Python and Tkinter that allows you to convert files between various formats and edit images by removing backgrounds. It features both single and batch file conversion modes, a background removal tool, a modern dark theme, and a user-friendly graphical interface.
 
 ## Features
 - Convert single or multiple files at once
+- Remove backgrounds from images with a single click
 - Supports popular image formats: PNG, JPG, JPEG, GIF, BMP, WEBP, TIFF
 - Supports popular audio formats: MP3, WAV, AAC, OGG, FLAC
 - Batch conversion with automatic output folder creation
 - Remembers window size and position
-- Modern dark theme using sv-ttk
+- Modern dark theme using ttkbootstrap
 
 ## Requirements
 - Python 3.7+
 - [FFmpeg](https://ffmpeg.org/) (required for audio conversions)
+- Additional dependencies listed in requirements.txt
 
 ## Installation
 1. Clone or download this repository.
@@ -30,12 +32,16 @@ python main.py
 
 - Use the GUI to select files, choose formats, and convert.
 - For batch conversions, all selected files must be of the same format.
+- To remove backgrounds from images, go to the "Remove Background" section from the menu.
 
 ## File Structure
 - `main.py` - Application entry point
 - `GUI.py` - GUI layout and logic
 - `Limiter.py` - Controller for file operations and conversions
 - `Conversions.py` - Supported formats and conversion rules
+- `BackgroundRemover.py` - Image background removal functionality
+- `Converter.py` - File conversion functionality
+- `FileHandler.py` - File selection and path management
 - `requirements.txt` - Python dependencies
 - `favicon.ico` - Application icon
 
@@ -45,4 +51,3 @@ Screenshots are available in the `Screenshots/` folder.
 
 ## License
 Check out [LICENSE](LICENSE) for details.
-
