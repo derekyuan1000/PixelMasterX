@@ -1,0 +1,7 @@
+ttkbootstrap
+sv-ttk
+pillow
+pydub
+rembg
+onnxruntime
+
