@@ -134,3 +134,81 @@ class FileHandler:
         folder_path = filedialog.askdirectory()
         if folder_path:
             self.gui.bg_output_folder.set(folder_path)
+
+    def select_image_for_editing(self, editor_type):
+        """Browse and select a single image file for an editing operation."""
+        # Define allowed file types for images
+        image_filetypes = [("Image files", "*.png *.jpg *.jpeg *.bmp *.webp *.tiff *.gif"), ("All files", "*.*")]
+        input_path = filedialog.askopenfilename(filetypes=image_filetypes)
+
+        if input_path:
+            base_name = os.path.basename(input_path)
+            if editor_type == "resize":
+                self.gui.resize_chosen_file.set(base_name)
+                self.gui.resize_file_path = input_path
+                # Optionally set default output folder for resize
+                if not self.gui.resize_output_folder.get():
+                    self.gui.resize_output_folder.set(os.path.dirname(input_path))
+            elif editor_type == "compress":
+                self.gui.compress_chosen_file.set(base_name)
+                self.gui.compress_file_path = input_path
+                if not self.gui.compress_output_folder.get():
+                   self.gui.compress_output_folder.set(os.path.dirname(input_path))
+            elif editor_type == "color_adjust":
+                self.gui.color_chosen_file.set(base_name)
+                self.gui.color_file_path = input_path
+                if not self.gui.color_output_folder.get():
+                    self.gui.color_output_folder.set(os.path.dirname(input_path))
+            elif editor_type == "watermark_base":
+                self.gui.watermark_base_chosen_file.set(base_name)
+                self.gui.watermark_base_file_path = input_path
+                if not self.gui.watermark_output_folder.get(): # Default output for main operation
+                    self.gui.watermark_output_folder.set(os.path.dirname(input_path))
+            elif editor_type == "watermark_image":
+                self.gui.watermark_image_chosen_file.set(base_name)
+                self.gui.watermark_image_file_path = input_path
+            elif editor_type == "metadata":
+                self.gui.metadata_chosen_file.set(base_name)
+                self.gui.metadata_file_path = input_path
+                # Optionally set default output folder for metadata if not set
+                if not self.gui.metadata_output_folder.get():
+                    self.gui.metadata_output_folder.set(os.path.dirname(input_path))
+            else:
+                mb.showerror("Error", f"Unknown editor type: {editor_type}")
+        else:
+            if editor_type == "resize":
+                self.gui.resize_chosen_file.set("")
+                self.gui.resize_file_path = ""
+            elif editor_type == "compress":
+                self.gui.compress_chosen_file.set("")
+                self.gui.compress_file_path = ""
+            elif editor_type == "color_adjust":
+                self.gui.color_chosen_file.set("")
+                self.gui.color_file_path = ""
+            elif editor_type == "watermark_base":
+                self.gui.watermark_base_chosen_file.set("")
+                self.gui.watermark_base_file_path = ""
+            elif editor_type == "watermark_image":
+                self.gui.watermark_image_chosen_file.set("")
+                self.gui.watermark_image_file_path = ""
+            elif editor_type == "metadata":
+                self.gui.metadata_chosen_file.set("")
+                self.gui.metadata_file_path = ""
+            # Add elif for other editor_types here as well
+
+    def select_output_folder_for_editing(self, editor_type):
+        """Browse and select the output folder for an editing operation."""
+        folder_path = filedialog.askdirectory()
+        if folder_path:
+            if editor_type == "resize":
+                self.gui.resize_output_folder.set(folder_path)
+            elif editor_type == "compress":
+                self.gui.compress_output_folder.set(folder_path)
+            elif editor_type == "color_adjust":
+                self.gui.color_output_folder.set(folder_path)
+            elif editor_type == "watermark": # Main operation output
+                self.gui.watermark_output_folder.set(folder_path)
+            elif editor_type == "metadata":
+                self.gui.metadata_output_folder.set(folder_path)
+            else:
+                mb.showerror("Error", f"Unknown editor type for output: {editor_type}")
